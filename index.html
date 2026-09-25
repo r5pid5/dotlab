@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#191b19"><meta name="description" content="사진에 글자, 망점, 컬러와 기호를. 피사체와 배경을 따로 꾸미는 나만의 사진 실험실.">
+  <title>DOTLAB — 사진 편집실</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg"><link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./symbols.css">
+<link rel="stylesheet" href="./type.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="DOTLAB 홈"><span class="brand-mark">⠿</span>DOTLAB<span class="beta">STUDIO</span></a>
+    <div class="document-name"><span class="doc-dot"></span><input id="project-name" aria-label="작품 이름" value="작은 우연의 조합"><span class="local-badge">내 브라우저에서 작업 중</span></div>
+    <div class="header-actions"><button class="icon-btn" data-action="undo" title="실행 취소 (Ctrl+Z)" aria-label="실행 취소">↶</button><button class="icon-btn" data-action="redo" title="다시 실행 (Ctrl+Shift+Z)" aria-label="다시 실행">↷</button><span class="divider"></span><button class="quiet-btn" data-action="project-save">작업 저장</button><button class="primary-btn" data-action="export">이미지 저장 <span>↓</span></button></div>
+  </header>
+  <main class="workspace">
+    <nav class="toolrail" aria-label="편집 도구">
+      <button class="tool active" data-tool="effects"><span>◉</span>사진 효과</button>
+      <button class="tool" data-tool="cutout"><span>◌</span>누끼</button>
+      <button class="tool" data-tool="text"><span class="text-icon">T</span>글자</button>
+      <button class="tool" data-tool="shapes"><span>✳</span>기호/스티커</button>
+      <button class="tool" data-tool="punch"><span>✿</span>펀칭</button>
+      <button class="tool" data-tool="color"><span>◧</span>색상</button>
+      <button class="tool" data-tool="layout"><span>▥</span>사진/프레임</button>
+      <button class="tool" data-tool="draw"><span>〰</span>그리기</button>
+      <button class="tool" data-tool="play"><span>✣</span>더 보기</button>
+      <div class="rail-spacer"></div><button class="tool help-tool" data-action="help"><span>?</span>도움말</button>
+    </nav>
+    <aside class="control-panel"><div class="panel-title"><div><span class="eyebrow" id="panel-eyebrow">PHOTO PLAYGROUND</span><h1 id="panel-heading">질감을 더하다<span>.</span></h1></div><span class="panel-number" id="panel-number">01</span></div><div id="controls"></div></aside>
+    <section class="stage" aria-label="사진 편집 캔버스">
+      <div class="stage-top"><div class="stage-label"><span class="small-cross">✣</span> CANVAS <span id="canvas-dimensions">사진을 불러와주세요</span></div><button class="import-btn" data-action="upload"><span>＋</span> 사진 불러오기</button></div>
+      <div class="canvas-area is-empty" id="dropzone"><div id="empty-stage" class="empty-stage"><div class="empty-photo-icon">＋</div><h2>어떤 사진으로 놀아볼까요?</h2><p>내 사진을 끌어 놓거나 불러와주세요.</p><button class="primary-btn" data-action="upload">사진 불러오기 ↗</button><small>JPG · PNG · WebP · 사진은 내 기기에서 편집해요</small></div><div class="canvas-mat"><canvas id="canvas" width="792" height="1126" aria-label="편집 결과. 글자와 스티커를 드래그해 이동할 수 있습니다."></canvas><canvas id="interaction" width="792" height="1126" aria-label="편집 영역" tabindex="0"></canvas></div><div class="drop-message">사진을 여기에 놓아주세요</div></div>
+      <div class="stage-bottom"><div class="canvas-hint" id="canvas-hint">효과를 골라 나만의 장면을 만들어보세요</div><div class="stage-buttons"><button id="compare" class="quiet-btn">◐ 원본 비교</button><span class="divider"></span><button class="quiet-btn" data-action="photo-fit">사진 채우기 ↺</button></div></div>
+      <div class="preset-tray"><div class="tray-title"><strong>빠른 스타일</strong><span>QUICK RECIPES</span></div><div id="presets" class="preset-list"></div><button class="shuffle-btn" data-action="randomize"><span>⤨</span>랜덤 조합</button></div>
+    </section>
+    <aside class="inspector"><div class="inspector-heading">내 작업<span>LAYERS</span></div><div id="layers"></div><div class="inspector-note"><span>✦</span><p>사진 위에 취향을 쌓아보세요.<br>글자와 기호는 자유롭게 이동할 수 있어요.</p></div><div class="palette-section"><div class="section-label">사진에서 찾은 색<button class="text-btn" data-action="extract-palette">추출 ↻</button></div><div id="palette" class="palette"></div></div><div class="inspector-footer"><div class="privacy-mark">⌁ &nbsp; 이곳에서만, 안전하게.</div><p>사진은 서버로 전송되지 않고<br>이 브라우저 안에서 편집됩니다.</p><button class="text-btn" data-action="project-open">저장한 작업 열기 ↗</button></div></aside>
+  </main>
+  <footer class="statusbar"><span>MAKE SOMETHING UNEXPECTED.</span><span id="status" role="status">준비 완료</span><span>DOTLAB / 001</span></footer>
+  <input type="file" id="photo-input" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" hidden><input type="file" id="sticker-input" accept="image/png,image/jpeg,image/webp" multiple hidden><input type="file" id="project-input" accept=".dotlab,application/json" hidden><input type="file" id="mask-input" accept="image/png,image/jpeg,image/webp" hidden>
+  <div id="toast" class="toast" role="status"></div>
+  <dialog id="export-dialog"><div class="dialog-top"><span class="eyebrow">MADE BY YOU</span><button class="icon-btn" data-action="close-dialog" aria-label="닫기">×</button></div><h2>이 장면을, 내 것으로.</h2><p>지금 보고 있는 편집 결과를 저장해요.</p><label class="field-label">파일 형식<select id="export-format"><option value="png">PNG · 투명 배경 지원</option><option value="jpeg">JPG · 가벼운 사진 파일</option><option value="webm">동영상 · 4초 기호 애니메이션</option></select></label><label class="field-label">긴 변 해상도<select id="export-size"><option value="1440">1440 px</option><option value="2048" selected>2048 px</option><option value="3000">3000 px</option></select></label><button class="primary-btn wide" data-action="download">다운로드 ↗</button><p class="fine-print" id="export-note">PNG에는 워터마크가 들어가지 않습니다.</p></dialog>
+  <dialog id="help-dialog"><div class="dialog-top"><span class="eyebrow">QUICK GUIDE</span><button class="icon-btn" data-action="close-dialog" aria-label="닫기">×</button></div><h2>편집 시작하기</h2><ol><li><b>사진 불러오기</b>로 내 사진을 열어요. 사진은 드래그·휠로 이동하고 확대해요.</li><li><b>누끼</b>에서 AI로 피사체를 선택하고 브러시 또는 둘러서 복구/지우기로 다듬어요. 브러시 크기가 커서에 표시되고 사진 이동은 잠겨요.</li><li><b>사진 효과</b>에서 효과와 적용 부위를 골라요. 효과 레이어를 추가하면 여러 효과를 겹칠 수 있어요.</li><li><b>펀칭 → 직접 펀칭 시작</b>을 누르고 사진에 도형을 찍어요. 옆 색상판의 사진 조각을 드래그·정렬할 수 있어요.</li><li><b>글자</b>에서 문구와 폰트를 고르고 효과 템플릿을 적용해요. 외곽선·입체·광택·자간·행간을 각각 조절해요.</li><li><b>기호/스티커</b>에서 기호를 직접 찍거나 내 사진으로 스티커를 만들어요. <b>사진/프레임</b>에서 콜라주와 디카 색상을 고를 수 있어요.</li><li>글자와 스티커는 드래그로 이동하고 모서리와 위쪽 손잡이로 크기·회전을 조절해요.</li><li><b>이미지 저장</b>은 완성 이미지, <b>작업 저장</b>은 나중에 수정할 수 있는 파일을 만들어요.</li></ol><p>Ctrl/⌘ + Z 실행 취소 · Shift + Z 다시 실행<br>Delete 선택한 글자·스티커·펀칭 조각 삭제</p><a href="./credits.html" target="_blank" rel="noopener">사용 기술과 출처 ↗</a></dialog>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

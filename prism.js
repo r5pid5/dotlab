@@ -1,0 +1,8 @@
+export function prism(source,fx){
+ const w=source.width,h=source.height,u=Math.max(w,h)/1000,make=()=>Object.assign(document.createElement('canvas'),{width:w,height:h}),out=make(),x=out.getContext('2d');x.drawImage(source,0,0);
+ const bright=make(),b=bright.getContext('2d',{willReadFrequently:true});b.drawImage(source,0,0);const d=b.getImageData(0,0,w,h);for(let i=0;i<d.data.length;i+=4){const l=Math.max(d.data[i],d.data[i+1],d.data[i+2]);d.data[i+3]*=Math.max(0,(l-150)/105)*.8;}b.putImageData(d,0,0);
+ x.globalCompositeOperation='screen';const angle=(fx.angle??-25)*Math.PI/180,length=(fx.spread??55)*u,dx=Math.cos(angle),dy=Math.sin(angle);x.filter=`blur(${(fx.bloom??45)/9*u}px)`;x.globalAlpha=fx.strength/100/18;for(let i=-9;i<=9;i++)x.drawImage(bright,dx*i*length/9,dy*i*length/9);x.filter='none';
+ let seed=71;const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296};
+ for(let n=0;n<Math.round(fx.density/8);n++){const px=rand()*w,py=rand()*h,r=(35+rand()*120)*u;x.save();x.translate(px,py);x.rotate(angle+rand()*.6);x.beginPath();x.ellipse(0,0,r*.48,r,0,0,Math.PI*2);x.clip();x.globalAlpha=fx.strength/100*.24;const g=x.createLinearGradient(-r,0,r,0);for(const [i,c]of ['#00ffdc','#448aff','#aa55ff','#ff5189','#ffcb52','#e8ffe0'].entries())g.addColorStop(i/5,c);x.fillStyle=g;for(let yy=-r;yy<r;yy+=4*u){x.globalAlpha=fx.strength/100*(.1+rand()*.28);x.fillRect(-r,yy,r*2,1.8*u)}x.restore()}
+ x.globalCompositeOperation='screen';x.globalAlpha=fx.strength/200;const leak=x.createRadialGradient(w*.02,h*.6,0,w*.02,h*.6,w*.6);leak.addColorStop(0,'#abefdf');leak.addColorStop(1,'#000000');x.fillStyle=leak;x.fillRect(0,0,w,h);return out;
+}
